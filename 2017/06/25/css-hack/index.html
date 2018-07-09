@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>CSS 各种Hack手段 | Harry Fish&#39;s Blog</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="keywords" content="CSS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CSS 各种Hack手段">
+<meta property="og:url" content="http://yoursite.com/2017/06/25/css-hack/index.html">
+<meta property="og:site_name" content="Harry Fish&#39;s Blog">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-06-20T00:31:06.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CSS 各种Hack手段">
+  
+    <link rel="alternative" href="/atom.xml" title="Harry Fish&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="http://7xkj1z.com1.z0.glb.clouddn.com/head.jpg">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+<script>
+    (function(){
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+        }
+        else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+  
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-85415703-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  <script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+  <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+  
+</head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="http://7xkj1z.com1.z0.glb.clouddn.com/head.jpg" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">Harry Fish</a></h1>
+		</hgroup>
+
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/CSS/" style="font-size: 10px;">CSS</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Hexo/" style="font-size: 18px;">Hexo</a> <a href="/tags/JavaScript/" style="font-size: 20px;">JavaScript</a> <a href="/tags/NBA/" style="font-size: 10px;">NBA</a> <a href="/tags/Next/" style="font-size: 18px;">Next</a> <a href="/tags/Service-worker/" style="font-size: 10px;">Service-worker</a> <a href="/tags/css/" style="font-size: 10px;">css</a> <a href="/tags/essay/" style="font-size: 16px;">essay</a> <a href="/tags/gulp/" style="font-size: 10px;">gulp</a> <a href="/tags/jQuery/" style="font-size: 10px;">jQuery</a> <a href="/tags/npm/" style="font-size: 12px;">npm</a> <a href="/tags/sass/" style="font-size: 10px;">sass</a> <a href="/tags/vue/" style="font-size: 14px;">vue</a> <a href="/tags/zepto/" style="font-size: 10px;">zepto</a>
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.baidu.com">百度</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.baidu.com">谷歌</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">Harry Fish</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="http://7xkj1z.com1.z0.glb.clouddn.com/head.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">Harry Fish</h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-css-hack" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/06/25/css-hack/" class="article-date">
+  	<time datetime="2017-06-24T19:25:24.000Z" itemprop="datePublished">2017-06-25</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      CSS 各种Hack手段
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CSS/">CSS</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/前端/">前端</a>
+	</div>
+
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- <img src="/images/css-hack-1.png" alt="css-hack"> -->
+<a id="more"></a>
+<p>随着浏览器的发展，css hack 技术的使用应该越来越少了，但是在某些关键时刻以及综合的WEB应用或者老项目中，可能还需要使用 css hack 技术来解决一些问题。</p>
+<h1 id="css-hack-分类"><a href="#css-hack-分类" class="headerlink" title="css hack 分类"></a>css hack 分类</h1><p>css hack 分类大致有 3 种表现形式：<strong>IE条件注释法</strong>、<strong>CSS属性前缀法</strong>以及<strong>选择器前缀法</strong>。</p>
+<p>IE 条件注释法（即 HTML 条件注释 Hack）：<br>针对所有IE(注：IE10+ 已经不再支持条件注释)：<br><code>&lt;!--[if IE]&gt;IE浏览器显示的内容 &lt;![endif]--&gt;</code>；</p>
+<p>针对 IE6 及以下版本：<br><code>&lt;!--[if lt IE 6]&gt;只在IE6-显示的内容 &lt;![endif]--&gt;</code>。<br>这类 Hack 不仅对 CSS 生效，对写在判断语句里面的所有代码都会生效。</p>
+<p>属性前缀法（即类内部 Hack）：例如 IE6 能识别下划线 <code>_</code> 和星号 <code>*</code>，IE7 能识别星号 <code>*</code>，但不能识别下划线 <code>_</code>，IE6~IE10 都认识 <code>\9</code>，但 firefox 前述三个都不能认识。</p>
+<p>选择器前缀法（即选择器 Hack）：例如 IE6 能识别 <code>*html .class{}</code>，IE7 能识别 <code>*+html .class{}</code> 或者 <code>*:first-child+html .class{}</code>。</p>
+<p>css hack 书写顺序，一般是将适用范围广、被识别能力强的 CSS 定义在前面。</p>
+<h1 id="条件注释法"><a href="#条件注释法" class="headerlink" title="条件注释法"></a>条件注释法</h1><p><strong>语法：</strong><br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- [if &lt;keywords&gt;? IE &lt;version&gt; ?]&gt;</span></span><br><span class="line"><span class="comment">HTML 代码块</span></span><br><span class="line"><span class="comment">&lt;![endif]--&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p><strong>取值：</strong><br><code>&lt;keywords&gt;</code><br>if 条件共包含 6 种选择方式：是否、大于、大于或等于、小于、小于或等于、非指定版本<br><strong>是否</strong>：指定是否 IE 或 IE 某个版本。关键字：空<br><strong>大于</strong>：选择大鱼指定版本的 IE 版本。关键字：gt<br><strong>大于或等于</strong>：选择大于或等于指定版本的 IE 版本。关键字：gte<br><strong>小于</strong>：选择小于指定版本的IE版本。关键字：lt<br><strong>小于或等于</strong>：选择小于或等于指定版本的IE版本。关键字：lte<br><strong>非指定版本</strong>：选择除指定版本外的所有IE版本。关键字：!</p>
+<p><strong>说明：</strong><br>用于选择 IE 浏览器及IE的不同版本</p>
+<p><strong>示例：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">只在IE下生效</span><br><span class="line">&lt;!--[if IE]&gt;</span><br><span class="line">这段文字只在IE浏览器显示</span><br><span class="line">&lt;![endif]--&gt;</span><br><span class="line"></span><br><span class="line">只在IE6下生效</span><br><span class="line">&lt;!--[if IE 6]&gt;</span><br><span class="line">这段文字只在IE6浏览器显示</span><br><span class="line">&lt;![endif]--&gt;</span><br><span class="line"></span><br><span class="line">只在IE6以上版本生效</span><br><span class="line">&lt;!--[if gte IE 6]&gt;</span><br><span class="line">这段文字只在IE6以上(包括)版本IE浏览器显示</span><br><span class="line">&lt;![endif]--&gt;</span><br><span class="line"></span><br><span class="line">只在IE8上不生效</span><br><span class="line">&lt;!--[if ! IE 8]&gt;</span><br><span class="line">这段文字在非IE8浏览器显示</span><br><span class="line">&lt;![endif]--&gt;</span><br><span class="line"></span><br><span class="line">非IE浏览器生效</span><br><span class="line">&lt;!--[if !IE]&gt;</span><br><span class="line">这段文字只在非IE浏览器显示</span><br><span class="line">&lt;![endif]--&gt;</span><br></pre></td></tr></table></figure>
+<p>需要说明的是，IE10和11已经不支持这种条件注释法了。<a href="/yu/css-hack.html" target="_blank">运行上面示例</a></p>
+<h1 id="CSS-属性前缀法"><a href="#CSS-属性前缀法" class="headerlink" title="CSS 属性前缀法"></a>CSS 属性前缀法</h1><p><strong>语法：</strong><br>selector {<hack>?property:value<hack>?;}</hack></hack></p>
+<p><strong>取值：</strong><br><code>_</code>：选择 IE6 及以下。连接线（中划线）（-）亦可使用，为了避免与某些带中划线的属性混淆，所以使用下划线（_）更为合适。<br><code>*</code>：选择 IE7 及以下。诸如：（+）与（#）之类的均可使用，不过业界对（*）的认知度更高。<br><code>\9</code>：选择 IE6+。<br><code>\0</code>：选择 IE8+ 和 Opera。<br><code>[;property:value;];</code>：选择 webkit 核心浏览器（Chrome,Safari）。IE7 及以下也能识别。中括号内外的 3 个分号必须保留，第一个分号前可以是任意规则或任意多个规则。<br><code>[;color:#f00;];</code> 与 <code>[color:#f00;color:#f00;];</code> 与 <code>[margin:0;padding:0;color:#f00;];</code> 是等价的。生效的始终是中括号内的最后一条规则，所以通常选用第一种写法最为简洁。</p>
+<p><strong>说明：</strong><br><strong>选择不同的浏览器及版本</strong>尽可能减少对 CSS Hack 的使用。Hack 有风险，谨慎使用。<br>一些 CSS Hack 由于浏览器存在交叉认识，所以需要通过层层覆盖的方式来实现对不同浏览器进行 Hack 的。如下面这个例子：<br><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.test</span>&#123;</span><br><span class="line">  <span class="attribute">color</span>:<span class="number">#090</span>\<span class="number">9</span>; <span class="comment">/* For IE8+ */</span></span><br><span class="line">  *color:#f00;  /* For IE7 and earlier */</span><br><span class="line">  _<span class="selector-tag">color</span>:<span class="selector-id">#ff0</span>;  <span class="comment">/* For IE6 and earlier */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p id="div-border-left-yellow">上述 Hack 均需运行在标准模式下，若在怪异模式下运行，这些 Hack 将会被不同版本的 IE 相互识别，导致失效。</p>
+
+
+<h1 id="选择器前缀法"><a href="#选择器前缀法" class="headerlink" title="选择器前缀法"></a>选择器前缀法</h1><p><strong>语法：</strong><br><code>&lt;hack&gt;selector{sRules}</code></p>
+<p><strong>说明：</strong><br><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">* <span class="selector-tag">html</span> <span class="selector-class">.test</span>&#123;<span class="attribute">color</span>:<span class="number">#090</span>;&#125;       <span class="comment">/* For IE6 and earlier */</span></span><br><span class="line">* + <span class="selector-tag">html</span> <span class="selector-class">.test</span>&#123;<span class="attribute">color</span>:<span class="number">#ff0</span>;&#125;     <span class="comment">/* For IE7 */</span></span><br><span class="line"><span class="selector-class">.test</span><span class="selector-pseudo">:lang(zh-cn)</span>&#123;<span class="attribute">color</span>:<span class="number">#f00</span>;&#125;  <span class="comment">/* For IE8+ and not IE */</span></span><br><span class="line"><span class="selector-class">.test</span><span class="selector-pseudo">:nth-child(1)</span>&#123;<span class="attribute">color</span>:<span class="number">#0ff</span>;&#125; <span class="comment">/* For IE9+ and not IE */</span></span><br></pre></td></tr></table></figure></p>
+<p id="div-border-left-yellow">上述代码中的3,4两行就是典型的利用能力来进行选择的 CSS Hack。</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/07/15/hexo-next-five/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">&lt;</strong>
+      <div class="article-nav-title">
+        
+          Hexo-NexT搭建个人博客（五）
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/06/08/service-worker/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">使用 Service worker 实现加速/离线访问博客</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="css-hack" data-title="CSS 各种Hack手段" data-url="http://yoursite.com/2017/06/25/css-hack/"  data-images="http://7xkj1z.com1.z0.glb.clouddn.com/head.jpg" data-content="CSS 各种Hack手段">
+    <div class="ds-share-inline">
+      <ul  class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2018 Harry Fish
+      </div>
+<!--         <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div> -->
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/main.js"></script>
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>

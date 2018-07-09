@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>使用 Service worker 实现加速/离线访问博客 | Harry Fish&#39;s Blog</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="有一个困扰 web 用户多年的难题——丢失网络连接。即使是世界上最好的 web app，如果下载不了它，也是非常糟糕的体验。如今虽然已经有很多种技术去尝试着解决这一问题。而随着离线页面的出现，一些问题已经得到了解决。有一个叫做 APP Cache 的 API 可以提供离线体验，但它的问题比较多。最重要的问题是，仍然没有一个好的统筹机制对资源缓存和自定义的网络请求进行控制。 Service work">
+<meta name="keywords" content="Service-worker">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用 Service worker 实现加速&#x2F;离线访问博客">
+<meta property="og:url" content="http://yoursite.com/2017/06/08/service-worker/index.html">
+<meta property="og:site_name" content="Harry Fish&#39;s Blog">
+<meta property="og:description" content="有一个困扰 web 用户多年的难题——丢失网络连接。即使是世界上最好的 web app，如果下载不了它，也是非常糟糕的体验。如今虽然已经有很多种技术去尝试着解决这一问题。而随着离线页面的出现，一些问题已经得到了解决。有一个叫做 APP Cache 的 API 可以提供离线体验，但它的问题比较多。最重要的问题是，仍然没有一个好的统筹机制对资源缓存和自定义的网络请求进行控制。 Service work">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/images/service-worker-1.png">
+<meta property="og:image" content="http://yoursite.com/images/service-worker-2.png">
+<meta property="og:image" content="http://yoursite.com/images/service-worker-3.png">
+<meta property="og:image" content="http://yoursite.com/images/service-worker-4.png">
+<meta property="og:image" content="http://yoursite.com/images/service-worker-5.png">
+<meta property="og:updated_time" content="2018-06-20T00:31:06.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用 Service worker 实现加速&#x2F;离线访问博客">
+<meta name="twitter:description" content="有一个困扰 web 用户多年的难题——丢失网络连接。即使是世界上最好的 web app，如果下载不了它，也是非常糟糕的体验。如今虽然已经有很多种技术去尝试着解决这一问题。而随着离线页面的出现，一些问题已经得到了解决。有一个叫做 APP Cache 的 API 可以提供离线体验，但它的问题比较多。最重要的问题是，仍然没有一个好的统筹机制对资源缓存和自定义的网络请求进行控制。 Service work">
+<meta name="twitter:image" content="http://yoursite.com/images/service-worker-1.png">
+  
+    <link rel="alternative" href="/atom.xml" title="Harry Fish&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="http://7xkj1z.com1.z0.glb.clouddn.com/head.jpg">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+<script>
+    (function(){
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+        }
+        else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+  
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-85415703-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  <script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+  <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+  
+</head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="http://7xkj1z.com1.z0.glb.clouddn.com/head.jpg" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">Harry Fish</a></h1>
+		</hgroup>
+
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/CSS/" style="font-size: 10px;">CSS</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Hexo/" style="font-size: 18px;">Hexo</a> <a href="/tags/JavaScript/" style="font-size: 20px;">JavaScript</a> <a href="/tags/NBA/" style="font-size: 10px;">NBA</a> <a href="/tags/Next/" style="font-size: 18px;">Next</a> <a href="/tags/Service-worker/" style="font-size: 10px;">Service-worker</a> <a href="/tags/css/" style="font-size: 10px;">css</a> <a href="/tags/essay/" style="font-size: 16px;">essay</a> <a href="/tags/gulp/" style="font-size: 10px;">gulp</a> <a href="/tags/jQuery/" style="font-size: 10px;">jQuery</a> <a href="/tags/npm/" style="font-size: 12px;">npm</a> <a href="/tags/sass/" style="font-size: 10px;">sass</a> <a href="/tags/vue/" style="font-size: 14px;">vue</a> <a href="/tags/zepto/" style="font-size: 10px;">zepto</a>
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.baidu.com">百度</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.baidu.com">谷歌</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">Harry Fish</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="http://7xkj1z.com1.z0.glb.clouddn.com/head.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">Harry Fish</h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-service-worker" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/06/08/service-worker/" class="article-date">
+  	<time datetime="2017-06-08T03:25:24.000Z" itemprop="datePublished">2017-06-08</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      使用 Service worker 实现加速/离线访问博客
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Service-worker/">Service-worker</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/前端/">前端</a>
+	</div>
+
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>有一个困扰 web 用户多年的难题——丢失网络连接。即使是世界上最好的 web app，如果下载不了它，也是非常糟糕的体验。如今虽然已经有很多种技术去尝试着解决这一问题。而随着<strong>离线页面</strong>的出现，一些问题已经得到了解决。有一个叫做 APP Cache 的 API 可以提供离线体验，但它的问题比较多。最重要的问题是，仍然没有一个好的统筹机制对资源缓存和自定义的网络请求进行控制。</p>
+<h1 id="Service-worker"><a href="#Service-worker" class="headerlink" title="Service worker"></a>Service worker</h1><p>于是 HTML5 提出了 Service Worker，Service worker 提供了很多新的能力，使得 web app 拥有与 nativeapp 相同的离线体验、消息推送体验。</p>
+<a id="more"></a>
+<p>Service worker 是一段脚本，它有能力往我们的浏览器中写入缓存，过滤网络请求，将缓存内容作为网络响应结果输出。<br><strong>带来的效果是显而易见的：</strong></p>
+<p id="div-border-top-green">1、当我们缓存了某些资源的时候，当我们再次请求该资源的时候，我们便可以使用缓存的内容，这样的话，就可以减少网络请求了，网站的打开速度明显提升。<br>2、如果我们将网站所需的资源缓存下来了以后，这个时候即使计算机没有网络，依然可以打开这个网站，即离线访问。<br></p>
+
+<h1 id="Service-worker-使用场景"><a href="#Service-worker-使用场景" class="headerlink" title="Service worker 使用场景"></a>Service worker 使用场景</h1><p>现在很流行基于 GitHub page 和 markdown 的静态 blog ，非常适合技术的思维和习惯，针对不同的语言都有一些优秀的静态 blog 系统出现，如 Jekyll/Ruby，Pelican/Python，Hexo/NodeJs ，由于静态内容的特性非常适合做缓存来加速页面的访问，就利用 Service worker 来实现加速，结果是除了 PageSpeed，CDN 这些常见的服务器和网络加速之外，通过客户端实现了更好的访问体验。</p>
+<h1 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h1><p>你现在可以断开你的网络，或者用浏览器中模拟无网络的情景，继续访问本站。<br><i style="color:red;">如何在浏览器中模拟无网络环境？(在 Network 中选择 offline)</i><br><img src="/images/service-worker-1.png" alt=""></p>
+<h1 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h1><h2 id="注册-Service-worker"><a href="#注册-Service-worker" class="headerlink" title="注册 Service worker"></a>注册 Service worker</h2><p>要安装 Service worker，你需要在你的页面上注册它。下面的代码会告诉浏览器你的 Service worker 脚本放在哪里<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">  <span class="keyword">if</span> (navigator.serviceWorker) &#123;</span><br><span class="line">    <span class="comment">// 注册Service Worker scope表示作用的页面的path</span></span><br><span class="line">    <span class="comment">// register函数返回Promise</span></span><br><span class="line">    navigator.serviceWorker.register(<span class="string">'/service-worker.js'</span>,&#123;<span class="attr">scope</span>: <span class="string">'/'</span>&#125;) </span><br><span class="line">      .then(<span class="function"><span class="keyword">function</span> (<span class="params">registration</span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(registration);</span><br><span class="line">      &#125;)</span><br><span class="line">      .catch(<span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.error(e);</span><br><span class="line">      &#125;)</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'Service Worker is not supported in this browser.'</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>以上代码会先检测 Service worker 在浏览器中是否可用，可用的话一个 Service worker（/service-worker.js）将被注册，如果这个 Service worker 已经注册过了，浏览器这会忽略以上代码。<br><code>{scope: &#39;/&#39;}</code> 表示 Service worker 作用的范围。<br>需要说明的是 service-worker.js 文件被放在这个域的根目录下，这意味着 service worker 是跟网站同源的。换句话说，这个 service worker 将会获取到这个域下的所有 fetch 事件。<br>如果 service worker 文件注册到 /example/service-worker.js ，那么 service worker 只能收到 /example/ 路径下的 fetch 事件（比如： /example/page1/, /example/page2/）。<br>如果 service worker 文件注册到根目录下 /service-worker.js ，同时 <code>{scope: &#39;/example&#39;}</code> ，那么 service worker 也只能收到 /example/ 路径下的 fetch 事件。</p>
+<p>service-worker.js 文件，我建议是放在网站的跟目录下，scope 不作修改，这样 service worker 拥有最大的使用范围。</p>
+<h2 id="安装-Service-worker"><a href="#安装-Service-worker" class="headerlink" title="安装 Service worker"></a>安装 Service worker</h2><p><img src="/images/service-worker-2.png" alt=""></p>
+<p><a href="https://neveryu.github.io/service-worker.js" target="_blank" rel="noopener">我的 service-worker.js</a><br>关于这个 service-worker.js 怎么写，具体可以查看 API ，<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Service_Worker_API" target="_blank" rel="noopener">MDN Service Worker API</a>。</p>
+<p id="div-border-left-red">注意：将 service-worker.js 放到域的根目录下哦，这样 Service worker 才能拥有最大的使用范围。</p>
+
+<p>现在你可以到 chrome://inspect/#service-workers 这里，检查 service worker 是否对你的网站启用了。<br>或者在 chrome://serviceworker-internals/ 中管理你的 Service worker 。<br>或者在浏览器的开发者工具中也可以详细的查看 service worker 的缓存。<br><img src="/images/service-worker-3.png" alt=""></p>
+<h1 id="Service-worker-核心-API"><a href="#Service-worker-核心-API" class="headerlink" title="Service worker 核心 API"></a>Service worker 核心 API</h1><p><img src="/images/service-worker-4.png" alt=""></p>
+<h2 id="install"><a href="#install" class="headerlink" title="install"></a>install</h2><p><img src="/images/service-worker-5.png" alt=""><br>install 是安装一个 service worker 缓存，使用方法可以是这样：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Set the callback for the install step</span></span><br><span class="line">self.addEventListener(<span class="string">'install'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">event</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// Perform install steps</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>在 install 的 callback 中，我们需要执行一下步骤：<br>1、开启一个缓存<br>2、缓存我们的文件<br>3、确定所有的资源是否要被缓存</p>
+<h2 id="fetch"><a href="#fetch" class="headerlink" title="fetch"></a>fetch</h2><p>fetch 用来监听用户的网络请求，并给出回应。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">self.addEventListener(<span class="string">'fetch'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">event</span>) </span>&#123;</span><br><span class="line">  event.respondWith(</span><br><span class="line">    caches.match(event.request)</span><br><span class="line">      .then(<span class="function"><span class="keyword">function</span>(<span class="params">response</span>) </span>&#123;</span><br><span class="line">        <span class="comment">// Cache hit - return response</span></span><br><span class="line">        <span class="keyword">if</span> (response) &#123;</span><br><span class="line">          <span class="keyword">return</span> response;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> fetch(event.request);</span><br><span class="line">      &#125;</span><br><span class="line">    )</span><br><span class="line">  );</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<h2 id="activate"><a href="#activate" class="headerlink" title="activate"></a>activate</h2><p>你的 Service worker 总会有要更新的时候。在那时，你需要按照一下步骤来更新：<br>1、更新你 service worker 的 JavaScript 文件。<br>2、更新后的 service worker 启动并触发 install 事件。<br>3、此时，当前页面生效的依然是老版本的 service worker ，新的 service worker 会进入“waitting”状态。<br>4、当页面关闭后，来的 service worker 会被干掉，新的 service worker 接管页面。<br>5、一旦新的 service worker 生效后会触发 active 事件。</p>
+<p>一个典型的 activete 事件：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">self.addEventListener(<span class="string">'activate'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">event</span>) </span>&#123; </span><br><span class="line"><span class="comment">// 监听worker的activate事件</span></span><br><span class="line">  event.waitUntil( <span class="comment">// 延迟activate事件直到</span></span><br><span class="line">    caches.keys().then(<span class="function"><span class="keyword">function</span>(<span class="params">keys</span>)</span>&#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="built_in">Promise</span>.all(keys.map(<span class="function"><span class="keyword">function</span>(<span class="params">key, i</span>)</span>&#123; <span class="comment">// 清除旧版本缓存</span></span><br><span class="line">        <span class="keyword">if</span>(key !== CACHE_VERSION)&#123;</span><br><span class="line">          <span class="keyword">return</span> caches.delete(keys[i]);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;))</span><br><span class="line">    &#125;)</span><br><span class="line">  )</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<h1 id="其他使用场景"><a href="#其他使用场景" class="headerlink" title="其他使用场景"></a>其他使用场景</h1><p>在网站 A 中，隐藏一个 iframe ，在这个 iframe 中注册一个 service worker ，这个 service worker 会缓存网站 B 所需的资源。<br>从未访问过网站 B，但网站已经在你的设备上预加载过了，一切仅仅因为你访问过网站 A。<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">iframe</span> <span class="attr">src</span>=<span class="string">"https://B.com/iframe.html"</span> <span class="attr">style</span>=<span class="string">"width: 0; height: 0; border: 0"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html lang=<span class="string">"en"</span>&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;meta charset=<span class="string">"utf-8"</span>&gt;</span><br><span class="line">&lt;title&gt;HTML5 For Web Designers&lt;<span class="regexp">/title&gt;</span></span><br><span class="line"><span class="regexp">&lt;script&gt;</span></span><br><span class="line"><span class="regexp">if ('serviceWorker' in navigator) &#123;</span></span><br><span class="line"><span class="regexp">  navigator.serviceWorker.register('/</span>serviceworker.js<span class="string">');</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string">&lt;/script&gt;</span></span><br><span class="line"><span class="string">&lt;/head&gt;</span></span><br><span class="line"><span class="string">&lt;/html&gt;</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/06/25/css-hack/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">&lt;</strong>
+      <div class="article-nav-title">
+        
+          CSS 各种Hack手段
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/05/20/npm-two/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">npm 的一个小细节</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="service-worker" data-title="使用 Service worker 实现加速/离线访问博客" data-url="http://yoursite.com/2017/06/08/service-worker/"  data-images="http://7xkj1z.com1.z0.glb.clouddn.com/head.jpg" data-content="使用 Service worker 实现加速/离线访问博客">
+    <div class="ds-share-inline">
+      <ul  class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2018 Harry Fish
+      </div>
+<!--         <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div> -->
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/main.js"></script>
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>
